@@ -63,4 +63,21 @@ def check_and_vote_on_posts(subreddit_name):
         
         time.sleep(5) # Pause to respect Reddit's rate limits
 
+# Function to scan comments and reply based on keywords
+def check_and_reply_to_comments(subreddit_name):
+    subreddit = reddit.subreddit(subreddit_name)
+
+    for comment in subreddit.comments(limit=10):
+        print(f"Checking comment: {comment.body}")
+
+        # convert the comment body to lowercase for case-insensitive matching
+        comment_lower = comment.body.lower()
+
+        # check for keywords to reply
+        if any(keyword in comment_lower for keyword in comment_reply_keywords):
+            reply_text = "Hey! It looks like you need help with something related to Minecraft. You can check out [Minecraft Wiki](https://minecraft.fandom.com/wiki/Minecraft_Wiki) for more information!"
+            comment.reply(reply_text)
+            print(f"Replied to comment: {comment.body}")
+
+        time.sleep(5) # pause to respect reddit's rate limits
 
