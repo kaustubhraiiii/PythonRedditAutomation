@@ -81,3 +81,24 @@ def check_and_reply_to_comments(subreddit_name):
 
         time.sleep(5) # pause to respect reddit's rate limits
 
+# main function to run the bot
+def run_bot():
+    while True:
+        try:
+            for subreddit_name in minecraft_subreddits:
+                print(f"Scanning subreddit: {subreddit_name}")
+
+                # Check and vote on posts
+                check_and_vote_on_posts(subreddit_name)
+                
+                # Check and reply to comments
+                check_and_reply_to_comments(subreddit_name)
+                
+                time.sleep(60)  # Wait 1 minute before scanning again
+        
+        except Exception as e:
+            print(f"An error occured: {e}")
+            time.sleep(60)  # Wait 1 minute before retrying
+
+# run the bot
+run_bot()
