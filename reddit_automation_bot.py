@@ -38,3 +38,29 @@ def collect_data(submission):
         writer = csv.writer(file)
         writer.writerow([submission.title, submission.subreddit, submission.score, submission.upvote_ratio, submission.url])
 
+# function to scan posts and upvote/downvote based on keywords
+def check_and_vote_on_posts(subreddit_name):
+    subreddit = reddit.subreddit(subreddit_name)
+
+    for post in subreddit.new(limit=10):
+        print(f"Checking post: {post.title}")
+
+        # collect data for analysis
+        collect_data(post)
+
+        # convert the post title to lowercase for case-insensitive matching
+        title_lower = post.title.lower()
+
+        # check for upvote keywords
+        if any(keyword in title_lower for keyword in upvote_keywords):
+            post.upvote()
+            print(f"Upvoted post: {post.title}")
+
+        # check for downvote keywords
+        elif any(keyword in title_lower for keyword in downvote_keywords):
+            post.downvote()
+            print(f"Downvoted post: {post.title}")
+        
+        time.sleep(5) # Pause to respect Reddit's rate limits
+
+
